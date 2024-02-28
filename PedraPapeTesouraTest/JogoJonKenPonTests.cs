@@ -37,12 +37,13 @@ namespace PedraPapeTesouraTest
         }
 
         [Theory]
-        [InlineData(Forma.Pedra, Forma.Tesoura, Forma.Pedra, "Pedra quebra tesoura")]
-        [InlineData(Forma.Tesoura, Forma.Pedra, Forma.Pedra, "Pedra quebra tesoura")]
-        [InlineData(Forma.Tesoura, Forma.Papel, Forma.Tesoura, "Tesoura corta papel")]
-        [InlineData(Forma.Papel, Forma.Tesoura, Forma.Tesoura, "Tesoura corta papel")]
-        [InlineData(Forma.Papel, Forma.Pedra, Forma.Papel, "Papel cobre pedra")]
-        [InlineData(Forma.Pedra, Forma.Papel, Forma.Papel, "Papel cobre pedra")]
+        [InlineData(Forma.Pedra, Forma.Lagarto, Forma.Pedra, "Pedra esmaga lagarto")]
+        [InlineData(Forma.Lagarto, Forma.Spock, Forma.Lagarto, "Lagarto envenena Spock")]
+        [InlineData(Forma.Spock, Forma.Tesoura, Forma.Spock, "Spock quebra tesoura")]
+        [InlineData(Forma.Tesoura, Forma.Lagarto, Forma.Tesoura, "Tesoura decapita lagarto")]
+        [InlineData(Forma.Lagarto, Forma.Papel, Forma.Lagarto, "Lagarto come papel")]
+        [InlineData(Forma.Papel, Forma.Spock, Forma.Papel, "Papel contesta Spock")]
+        [InlineData(Forma.Spock, Forma.Pedra, Forma.Spock, "Spock vaporiza pedra")]
         public void Resultado_jogo_deve_ser_conforme_esperado(Forma forma1, Forma forma2, Forma resultadoEsperado, string requisito)
         {
             // Arrange / Act
@@ -52,12 +53,31 @@ namespace PedraPapeTesouraTest
             resultado.Should().Be(resultadoEsperado, requisito);
         }
 
+        [Theory]
+        [InlineData(Forma.Lagarto, Forma.Papel, Forma.Tesoura, "Lagarto come papel")]
+        [InlineData(Forma.Lagarto, Forma.Spock, Forma.Spock, "Lagarto envenena Spock")]
+        [InlineData(Forma.Papel, Forma.Spock, Forma.Pedra, "Papel contesta Spock")]
+        [InlineData(Forma.Pedra, Forma.Lagarto, Forma.Lagarto, "Pedra esmaga lagarto")]
+        [InlineData(Forma.Spock, Forma.Pedra, Forma.Tesoura, "Spock vaporiza pedra")]
+        [InlineData(Forma.Spock, Forma.Tesoura, Forma.Pedra, "Spock quebra tesoura")]
+        [InlineData(Forma.Tesoura, Forma.Lagarto, Forma.Spock, "Tesoura decapita lagarto")]
+        [InlineData(Forma.Lagarto, Forma.Lagarto, Forma.Papel, "Empate")]
+        public void Jogo_nao_deve_aceitar_combinacoes_erradas(Forma forma1, Forma forma2, Forma resultadoEsperado, string requisito)
+        {
+            // Arrange / Act
+            var resultado = sut.Jogar(forma1, forma2);
+
+            // Assert
+            resultado.Should().NotBe(resultadoEsperado, requisito);
+        }
+
+
         [Fact]
         public void Tentativa_de_jogar_com_formas_inválidas_deve_resultar_em_exception()
         {
             // Arrange 
-            var forma1 = "Pedra";
-            var forma2 = "Paspel";
+            var forma1 = "Piposck";
+            var forma2 = "Preda";
 
             // Act // Assert
             Assert.Throws<InvalidOperationException>(() => sut.Jogar(forma1, forma2));

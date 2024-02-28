@@ -3,8 +3,9 @@
     public enum Forma
     {
         Pedra,
-        Tesoura,
         Papel,
-        Trem
+        Tesoura,
+        Lagarto,
+        Spock
     }
 }
